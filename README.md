@@ -122,14 +122,3 @@ The ontology and prompts in this repository are independent research artifacts r
 ### Associated paper
 
 The paper *From Industrial Audio to Structured Records: A GenAI Multi-Agent System for Accident and Near-Miss Reporting* is accepted for publication by **Springer Nature** in *Advances in Industrial Engineering — Proceedings of the 14th International Conference on Industrial Engineering and Applications (Europe) — 2027* (Lecture Notes on Multidisciplinary Industrial Engineering). The manuscript is **not** part of this repository. Copyright in the paper is vested in the authors; Springer Nature holds exclusive publishing rights.
-
-**When reproducing the Version of Record or extracts from it**, include the acknowledgement required by the publisher:
-> *"First published in [Volume, page number, year] by Springer Nature"*
-
-**When reusing the paper in a thesis**, add:
-> *"Reproduced with permission from Springer Nature"*
-
-**When sharing or posting the Accepted Manuscript**, include the following disclaimer as required by Springer Nature:
-> *"This version of the contribution has been accepted for publication, after peer review but is not the Version of Record and does not reflect post-acceptance improvements, or any corrections. The Version of Record is available online at: http://dx.doi.org/[insert DOI]. Use of this Accepted Version is subject to the publisher's Accepted Manuscript terms of use https://www.springernature.com/gp/open-research/policies/accepted-manuscript-terms"*
-
-The Accepted Manuscript may be posted on a personal or institutional website immediately upon acceptance. Public release on institutional or funder repositories is permitted after a **12-month embargo** from the date of first publication.
