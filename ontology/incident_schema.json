@@ -1,0 +1,97 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Industrial Incident Report",
+  "description": "Ontology for accident and near-miss reporting in industrial settings. Used by the Worker agent to extract structured information from operator audio recordings. Fields are shared across both event categories; the 'severity' scale differs between Accident and Near Miss (see field description).",
+  "type": "object",
+  "properties": {
+    "event_type": {
+      "type": ["string", "null"],
+      "enum": ["Accident", "Near Miss", null],
+      "description": "Event category, assigned by the Router agent. 'Accident': a real injury occurred, however minor. 'Near Miss': a dangerous situation occurred but no person was actually harmed."
+    },
+    "severity": {
+      "type": ["string", "null"],
+      "enum": ["Bassa", "Media", "Alta", "Critica", null],
+      "description": "Severity level. Scale differs by event type:\n  ACCIDENT (based on actual injury):\n    Critica  → serious injury, hospitalisation\n    Alta     → injury requiring emergency care\n    Media    → minor injury, on-site treatment, no emergency care\n    Bassa    → minimal abrasion/bruise, no care needed\n    null     → accident confirmed but severity not described\n  NEAR MISS (based on potential harm avoided):\n    Critica  → avoided hazard could have caused severe harm (risk to life, permanent disability)\n    Alta     → avoided hazard could have caused serious harm (significant injury)\n    Media    → avoided hazard could have caused minor harm, or concrete potential without sufficient detail\n    Bassa    → no real proximity to harm; described risk is remote or theoretical\n    null     → no element of potential hazard explicitly described\n  NOTE: severity is always filled by the Worker agent (it requires an assessment); it is never left null unless the event type is confirmed but truly no severity indicator is present.",
+      "mandatory": true
+    },
+    "date": {
+      "type": ["string", "null"],
+      "description": "Event date in ISO 8601 format. Use 'YYYY-MM-DD' when year, month and day are all stated. Use '--MM-DD' when only month and day are stated (no year). Use '--MM' when only the month is stated. Use null only if no date element whatsoever is mentioned. Never infer or estimate.",
+      "examples": ["2024-03-28", "--03-28", "--03", null]
+    },
+    "time": {
+      "type": ["string", "null"],
+      "description": "Event time in HH:MM format (24-hour). Use null if no explicit time is stated. Do not estimate from indirect cues (e.g., 'it was dark', 'almost end of shift'). Only an explicitly declared time or an unambiguous moment (e.g., 'at noon' → '12:00') is accepted.",
+      "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9]$",
+      "examples": ["02:00", "15:15", null]
+    },
+    "plant": {
+      "type": ["string", "null"],
+      "description": "Name or code of the plant/site, explicitly stated in the audio (e.g., 'Stabilimento Torino', 'Sito produttivo Nord'). Do not infer from context or assume a default plant. null if the plant is not specifically identified.",
+      "mandatory": true
+    },
+    "department": {
+      "type": ["string", "null"],
+      "description": "Name or specific identifier of the department or production line (e.g., 'Reparto verniciatura', 'Magazzino spedizioni', 'Reparto verniciatura linea 2'). Do not use the generic word 'department'/'area'/'zone' without specifying which one. null if only a generic reference is given.",
+      "mandatory": true
+    },
+    "area": {
+      "type": ["string", "null"],
+      "description": "Specific workstation, machine, line or zone within the department — a finer spatial level than 'department' (e.g., 'Cabina di verniciatura 2', 'Nastro trasportatore linea 3', 'Carroponte 3'). Do not repeat the department or plant name here. If multiple specific references are mentioned, include them all separated by comma. null if no detail more specific than the department is provided."
+    },
+    "precursor_signal": {
+      "type": ["string", "null"],
+      "description": "An anomaly, out-of-place object, irregular condition or warning signal that a person present could have PERCEIVED (sight, hearing, smell) BEFORE the main event began — something that, if noticed, could have signalled that something was wrong.\n  NOT used for:\n  (a) technical facts that emerged only from post-event log/data analysis (even if the cause pre-existed), which belong in 'technical_cause';\n  (b) a person's behaviour, choice or procedure violation that is not in itself a perceptible warning signal (even if it occurred before the event), which belongs in 'human_factor'."
+    },
+    "main_event": {
+      "type": ["string", "null"],
+      "description": "The central fact of the event, in a concise but complete sentence — WHAT happened physically/operationally (e.g., 'finger crushed between roller and conveyor belt', 'fall from ladder during visual inspection'). Do NOT include the cause (belongs in technical/human/environmental_cause) or the consequence or subsequent actions (belong in immediate_consequence / corrective_action).",
+      "mandatory": true
+    },
+    "immediate_consequence": {
+      "type": ["string", "null"],
+      "description": "The direct and immediate effect of the event on the person involved (e.g., 'crushed finger, immediate swelling', 'burn on right arm', 'mild head trauma'). For Near Miss: typically 'no injury/damage' or describes what was barely avoided. Do not confuse with 'corrective_action' (human responses) or 'main_event' (the triggering fact).",
+      "mandatory": true
+    },
+    "people_involved": {
+      "type": ["integer", "null"],
+      "description": "Integer count of people physically present at the time and place of the event and directly exposed to the risk — including the injured person AND any colleague who was also exposed (even if unharmed), AND the speaking operator if present and exposed. NOT counted: people informed only after the event (e.g., a supervisor notified by radio but not physically present); people discussing the event in a later/separate debrief recording.",
+      "minimum": 1
+    },
+    "technical_cause": {
+      "type": ["string", "null"],
+      "description": "ONLY mechanical, electrical, electronic failure or malfunction of equipment/plant (e.g., component breakage, mechanical blockage, short circuit). NOT used for human factors or environmental conditions. If the audio explicitly confirms the equipment functioned correctly, use an explicit absence string (e.g., 'No technical cause identified — system functioned correctly') rather than null, since null triggers an automated recovery attempt. If a technical chain with multiple distinct steps is described, report the steps in sequence (use causal connectives only when the audio explicitly states the causal link)."
+    },
+    "human_factor": {
+      "type": ["string", "null"],
+      "description": "All human factors present, separated by semicolons — including behaviours or omissions of the injured person themselves, not only of third parties. If the audio explicitly confirms no human error occurred, use an explicit absence string rather than null."
+    },
+    "environmental_factor": {
+      "type": ["string", "null"],
+      "description": "All environmental/contextual factors present, separated by semicolons. Consider visibility, noise, lighting, floor conditions, dispersed chemical agents, and any other physical condition of the context. If the audio explicitly confirms conditions were normal, use an explicit absence string rather than null."
+    },
+    "corrective_action": {
+      "type": ["string", "null"],
+      "description": "Human DECISION or ACTION taken in response to the event — both DURING the event (while still ongoing) and IMMEDIATELY AFTER: physical/organisational mitigation (area lockdown, first aid, ambulance call, reporting to a supervisor) and documentary/investigative actions. List ALL distinct human actions separated by comma. Does NOT include automatic machine reactions or technical system resets (which belong in 'reset_performed')."
+    },
+    "reset_performed": {
+      "type": ["boolean", "null"],
+      "description": "true ONLY if the audio explicitly mentions the restart, re-arming or technical reset of a system, alarm, machine or line. false ONLY if the audio explicitly confirms no reset was necessary/performed. null if the topic is not mentioned."
+    },
+    "operator_role": {
+      "type": ["string", "null"],
+      "enum": ["Manutentore", "Operatore", "Capo turno", "Supervisore", "Responsabile", "Altro", null],
+      "description": "The role of WHO IS SPEAKING/REPORTING the audio — not of other people mentioned. Fill only if the speaker explicitly declares their own role. Implicit responsibility behaviours (coordinating an area, managing an emergency, having a superior to report to) do NOT count as an explicit role declaration. 'Responsabile' covers any title 'responsabile di X'. 'Altro' means a role explicitly declared but different from all the above. Undeclared role = null, never 'Altro'."
+    }
+  },
+  "required": ["severity", "plant", "department", "main_event", "immediate_consequence"],
+  "additionalProperties": false,
+  "notes": {
+    "no_inference_rule": "The Worker agent enforces a strict no-inference rule: information not explicitly stated in the audio is left null, not inferred. This is critical: null triggers downstream recovery (audio re-listening by the Validator, then targeted questions by the Interviewer), whereas an explicitly confirmed absence does not.",
+    "confirmed_absence": "For fields 'technical_cause', 'human_factor', 'environmental_factor': when the audio explicitly confirms the absence of a factor (e.g., 'the sensors worked correctly', 'no human error'), use a descriptive absence string instead of null. null means 'unknown / not mentioned'; a string means 'explicitly confirmed absent'.",
+    "near_miss_consequences": "For Near Miss events, 'immediate_consequence' typically reports that no person was harmed, which is consistent with the event definition. A Near Miss payload with a real injury in 'immediate_consequence' is flagged as incoherent by the Validator.",
+    "severity_assessment": "Severity and people_involved are the only fields that require an assessment (a judgement or count) rather than a purely stated value. They are therefore always filled by the Worker agent, even when the value must be inferred from the described facts. All other fields are filled only from explicitly stated information.",
+    "jolly_fields": "The Explorer agent may propose additional fields ('jolly fields') for information present in the audio but not covered by this ontology. These are stored in a separate column and are event-specific."
+  }
+}

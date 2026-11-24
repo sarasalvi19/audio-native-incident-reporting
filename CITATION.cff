@@ -1,0 +1,76 @@
+cff-version: 1.2.0
+message: >
+  If you use this ontology or these prompts in your work,
+  please cite the paper below.
+type: software
+title: audio-native-incident-reporting
+abstract: >
+  Ontology and prompt library for the GenAI Multi-Agent System described
+  in the ICIEA 2027 paper "From Industrial Audio to Structured Records:
+  A GenAI Multi-Agent System for Accident and Near-Miss Reporting".
+license: MIT
+date-released: "2026-11-24"
+authors:
+  - family-names: Salvi
+    given-names: Sara
+    orcid: https://orcid.org/0009-0007-4704-4835
+    affiliation: >
+      Department of Computer, Control, and Management Engineering
+      Antonio Ruberti, Sapienza University of Rome, Italy
+  - family-names: Colabianchi
+    given-names: Silvia
+    orcid: https://orcid.org/0000-0002-1811-8619
+    affiliation: >
+      Department of Engineering and Science,
+      Universitas Mercatorum, Rome, Italy
+  - family-names: Chiappini
+    given-names: Sara
+    affiliation: >
+      Department of Computer, Control, and Management Engineering
+      Antonio Ruberti, Sapienza University of Rome, Italy
+  - family-names: Costantino
+    given-names: Francesco
+    orcid: https://orcid.org/0000-0002-0942-821X
+    affiliation: >
+      Department of Computer, Control, and Management Engineering
+      Antonio Ruberti, Sapienza University of Rome, Italy
+  - family-names: Sabetta
+    given-names: Nicolò
+    orcid: https://orcid.org/0009-0009-0653-455X
+    affiliation: >
+      Department of Computer, Control, and Management Engineering
+      Antonio Ruberti, Sapienza University of Rome, Italy
+preferred-citation:
+  type: conference-paper
+  title: >
+    From Industrial Audio to Structured Records: A GenAI Multi-Agent
+    System for Accident and Near-Miss Reporting
+  authors:
+    - family-names: Salvi
+      given-names: Sara
+      orcid: https://orcid.org/0009-0007-4704-4835
+    - family-names: Colabianchi
+      given-names: Silvia
+      orcid: https://orcid.org/0000-0002-1811-8619
+    - family-names: Chiappini
+      given-names: Sara
+    - family-names: Costantino
+      given-names: Francesco
+      orcid: https://orcid.org/0000-0002-0942-821X
+    - family-names: Sabetta
+      given-names: Nicolò
+      orcid: https://orcid.org/0009-0009-0653-455X
+  year: 2027
+  collection-title: >
+    Advances in Industrial Engineering: Proceedings of the 14th
+    International Conference on Industrial Engineering and
+    Applications (Europe)
+  series: Lecture Notes on Multidisciplinary Industrial Engineering
+  publisher:
+    name: Springer Nature
+  conference:
+    name: >
+      14th International Conference on Industrial Engineering and
+      Applications (Europe) — ICIEA 2027
+    location: Rome, Italy
+  # doi and pages will be added after publication
